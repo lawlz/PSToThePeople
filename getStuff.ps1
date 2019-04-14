@@ -1,1 +1,0 @@
-write-host "Hello World" -backgroundcolor White -foregroundcolor Blue 
