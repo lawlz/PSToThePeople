@@ -7,21 +7,26 @@ This is the working directory of the presentation 'Powershell to the People'
 
 * Basics I wish I knew early on
     * Verb-noun wat?!
-    * Help Get-Help
+    * Help Get-Help -showwindow
     * Get-member
     * format outputs
-    * what is $_,?,%, $?, etc
+    * whatif | confirm
+    * what tha $_,?,%, $?,"`n" etc
 * PowerShell Profiles
-    * walk through the profile I have 
+    * How you can get one
+    * What I use mine for
+        * Looky at mine
 * Never open ADUC again!
     * How many active users
     * How many passwords never set on enabled users
     * How many people in a group
         * compare some groups
 * Tickle Outlook to send mail
-* Scheduled Task?
-    * add-type to do this?  
-        Oh yeah do that!
+    * IR example and use case
+* Show the Power of the Shell
+    * add-type to add custom types  
+        * dll load and call
+        * You like your C# so much, run in PS!
 
 
 
@@ -91,7 +96,7 @@ This is the working directory of the presentation 'Powershell to the People'
         * Pops open an outlook message with all the stuffs
         * more easily adopted and accepted by others in IR
 
-5. Add Yo Type Right Here
+5. Add Your Type Right Here
     * Are you so attached to your C# you can't give it up?
 
 
@@ -99,13 +104,13 @@ This is the working directory of the presentation 'Powershell to the People'
 ## Code
 
 
+#TODO
+#figure this out
+#IEX (New-Object Net.Webclient).DownloadString(“https://github.com/lawlz/PSToThePeople/blob/7705c7ef36942185ffbaae93d1497ec7c6fe1100/getStuff.txt”)
 
 
 
 ## References
-
-
-
 
 Automatic variables to call - [good ol' built-ins](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-6)  
 More information about the [powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1  )
