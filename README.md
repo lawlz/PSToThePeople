@@ -86,7 +86,7 @@ This is the working directory of the presentation 'Powershell to the People'
         * `get-aduser -Filter "PasswordNeverExpires -eq 'True'"`
     * Find out who are all members of Domain Admins Group
 
-4. Send some mails
+4. Ticklin' the .Nets
     * Situation, had to update .msg file to send a phishing removel/malware endpoint events
         * too cumbersome and the perfect opp to flex some powershell skills
     * send-mailMessage to the rescue!
@@ -96,17 +96,15 @@ This is the working directory of the presentation 'Powershell to the People'
         * Pops open an outlook message with all the stuffs
         * more easily adopted and accepted by others in IR
 
-5. Add Your Type Right Here
+5. Advances Ops
     * Are you so attached to your C# you can't give it up?
+    * Wanna add that DLL?  
+
+6. Questions
+    * Code and references found in this repo.
+    * `IEX (New-Object Net.Webclient).DownloadString(“https://raw.githubusercontent.com/lawlz/PSToThePeople/master/getStuff.txt”)`
 
 
-
-## Code
-
-
-#TODO
-#figure this out
-#IEX (New-Object Net.Webclient).DownloadString(“https://github.com/lawlz/PSToThePeople/blob/7705c7ef36942185ffbaae93d1497ec7c6fe1100/getStuff.txt”)
 
 
 
@@ -128,8 +126,8 @@ Once you configure the cert, you can run the export-certificate cmdlet like so:
     `$cert = gci Cert:\LocalMachine\My\CertThumbprint`  
     `Export-Certificate -Cert $cert -FilePath "C:\Users\Administrator\Documents\newCert" -Type cert`  
 I then mounted the C$ share and copied down the cert that I exported above.  
-Finally the fix, run PS with *elevated* creds from client [side Powershell](https://serverfault.com/questions/337905/enabling-powershell-remoting-access-is-denied/568228#568228)  
-I was able to remote from a non-domain joined machine.  
+Finally the fix, run PS with *elevated* creds from client [side Powershell](https://serverfault.com/questions/337905/enabling-powershell-remoting-access-is-denied/568228#568228)
+I was able to enter a PS remoting session from a non-domain joined machine after following these steps.  
 
 
 BlueTeam Resources:  
