@@ -1,4 +1,4 @@
 # This script is to be called with the following command and is just a simple example:
-# IEX (New-Object Net.Webclient).DownloadString(“https://raw.githubusercontent.com/lawlz/PSToThePeople/master/getStuff.ps1”)
+# IEX (New-Object Net.Webclient).DownloadString(“https://raw.githubusercontent.com/lawlz/PSToThePeople/master/getStuff.txt”)
 # Run at your own risk, but of course you can see exactly what it does here:
-write-host "Hello World`nNewline here`nGet the code at Github.com/lawlz/PSToThePeople" -backgroundcolor Blue -foregroundcolor Yellow 
+write-host "Hello World`nNewline here`nGet the code at www.github.com/lawlz/PSToThePeople" -backgroundcolor Blue -foregroundcolor Yellow 
