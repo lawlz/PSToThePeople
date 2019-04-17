@@ -52,9 +52,12 @@ function md5sum {get-filehash -algorithm md5}
 # I had some help on this one. 
 # https://gallery.technet.microsoft.com/scriptcenter/Set-the-PowerShell-Console-bd8b2ad1
 if ($host) {
+  $Shell = $Host.UI.RawUI
+  $size = $Shell.BufferSize
+  $size.width=240
+  $size.height=9999
   # here i attempted to modify the current shell to have some defaults that I prefer.
   # I tried to base it off the current screen size to position to and all that.  Epic Fail...
-  # $shell = $host.ui.RawUI
   # # now get the shell size
   # $maxHeight = $shell.MaxPhysicalWindowSize.Height
   # $maxWidth = $shell.MaxPhysicalWindowSize.Width
@@ -91,10 +94,6 @@ if ($host) {
     }
     # set admin window settings
     # custom mods of the terminal shell:
-    $Shell = $Host.UI.RawUI
-    $size = $Shell.BufferSize
-    $size.width=240
-    $size.height=9999
     $shell.BackgroundColor = "Black"
     $shell.ForegroundColor = "DarkRed"
     $shell.windowtitle = "You are PowerShell'n as an Administrator!"
@@ -113,10 +112,6 @@ if ($host) {
       ">"
     }
     # custom mods of the shell:
-    $Shell = $Host.UI.RawUI
-    $size = $Shell.BufferSize
-    $size.width=240
-    $size.height=9999
     $shell.BackgroundColor = "Black"
     $shell.ForegroundColor = "Green"
     $shell.windowtitle = "You are PowerShell'n as a normal user."
@@ -171,7 +166,8 @@ if (test-path "$userRootDir\Documents\repo\scripts\powershell\functions.ps1") {
   . $userRootDir\Documents\repo\scripts\powershell\functions.ps1
 }
 
-#variables, to make it easier to cd into
+#variables, to make it easier to cd into or run a command from:
+# python3 $pygit\run.py
 $pygit = "$userRootDir\Documents\repo\git\projects\Scripts\Python"
 $pymods = "$userRootDir\Documents\analyst\tools\DidierStevensSuite"
 
@@ -184,7 +180,7 @@ set-location $goToNewHome
 (get-psprovider 'FileSystem').Home = $goToNewHome
 
 
-
+# potentially remove, I really never use.
 Function Global:draw-figure
 {
 Write-Host -ForegroundColor green @"                                            
