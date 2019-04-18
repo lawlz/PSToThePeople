@@ -154,7 +154,7 @@ $paths += check-path "$userRootDir\Documents\repo\scripts\python"
 # now to create a string var to append to
 [string]$allPaths = ""
 foreach ($location in $paths) {
-  # we have to break up each path with a semicolon
+  # we have to break up each path with a semicolon, starting with a semicolon
   $allPaths = $allpaths + ";" + $location
 }
 # now add those valid paths to env path
