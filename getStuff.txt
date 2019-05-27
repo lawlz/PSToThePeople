@@ -2,6 +2,6 @@
 # IEX (New-Object Net.Webclient).DownloadString(“https://raw.githubusercontent.com/lawlz/PSToThePeople/master/getStuff.txt”)
 # Run at your own risk, but of course you can see exactly what it does here:
 $heyThere = "Hello $env:username!  I hope you looked at the text file before you ran on $env:computername`a"
-$rememberTo = "'Be excellent to each other' - Billy S PReston, Esq"
-$getCode = "`nRegardless, git the code at https://www.github.com/lawlz/PSToThePeople`n`tUse freely and at your own risk"
+$rememberTo = "'Be excellent to each other' - Billy S Preston, Esq"
+$getCode = "`nRegardless, git the code at https://www.github.com/lawlz/PSToThePeople`n`n`tUse freely and at your own risk"
 write-host "$heyThere$getCode`n`n$rememberTo" -backgroundcolor Blue -foregroundcolor Yellow 
