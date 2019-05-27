@@ -11,15 +11,16 @@
     * format outputs - cuz you can
     * what tha $_,?,%, $?,"`n" etc
 2. PowerShell Profiles
-    * How you can get one
-    * What I use mine for
+    * What they are
+    * How to use and my use cases
+    * Walk through mine
 3. Never open ADUC again!  ADTools to the rescue!
     * How many active user objects
     * How many domain admins
         * admincount=1 caveats
     * compare some user to group memberships
-    * stale passwords for ADObjects -> https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/
-4. Tickle Outlook .net to send mail
+    * stale passwords or no password needed for [ADObjects](https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/)
+4. Tickle Outlook to send mail
     * Incident Response, use case, code, and demo
 5. Show the Power of the Shell  <--time permitting
     * add-type to add custom types  
@@ -68,20 +69,20 @@
 3. PS AD Tools - **tested only on 2016 functional domain**
     * Why use a GUI when all the power of ADUC is in PS ADTools
         * It scales and is quicker to get results.
-    * find the functional level of the domain with one commandlet!  
+    * Find the functional level of the domain with one commandlet!  
         * `get-adrootDSE` or like this `(Get-ADRootDSE).domainFunctionality`
     * Who has a password to never expire in your domain?  
         * `get-aduser -Filter "PasswordNeverExpires -eq 'True'"`
         * Or even if they do not require a [password](https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/)!
             * `Get-ADUser -Filter 'useraccountcontrol -band 32' -properties * | ft samaccountname,enabled,lastlogindate,PasswordLastSet`
-        * or like this now: `Get-ADUser -Filter 'PasswordNotRequired -eq $True' `
-    * what about those stale passwords?  Checks if older than 180 days:
-        * `get-aduser -Filter "enabled -eq 'True'" -properties * | where {$_.passwordlastset -le (get-date).adddays(-180)}`
+            * Or like this now: `Get-ADUser -Filter 'PasswordNotRequired -eq $True' `
+        * What about those stale passwords?  Checks if older than 180 days:
+            * `get-aduser -Filter "enabled -eq 'True'" -properties * | where {$_.passwordlastset -le (get-date).adddays(-180)}`
     * Get the number of service accounts, if you have a naming standard that requires svc- at the first of the name
         * `(get-aduser -filter "samaccountname -like 'svc-*'").count`
 
 4. Ticklin' the .Nets
-    * Situation, had to update .msg file to send a phishing removel/malware endpoint events
+    * Situation, had to manually update .msg file to send a phishing removal request
         * too cumbersome and the perfect opp to flex some powershell skills
     * send-mailMessage to the rescue!
         * sadly no adoption because could not validate the email template
