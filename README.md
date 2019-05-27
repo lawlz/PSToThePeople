@@ -1,30 +1,34 @@
 # Overview
 
-# Working Repo for Preso: 'Powershell to the People'
+This is the working directory of the presentation 'Powershell to the People'
+
 
 ## Outline
 
-1. Basics I wish I knew early on
-    * Verb-noun wat?!  Syntax caveats and ways around
-    * man for windows? Yeah, finally! 
-    * Get-member - and why I tend to run this at least once a day.
-    * format outputs - cuz you can
+* Basics I wish I knew early on
+    * Verb-noun wat?!
+    * Help Get-Help -showwindow
+    * Get-member
+    * format outputs
+    * whatif | confirm
     * what tha $_,?,%, $?,"`n" etc
-2. PowerShell Profiles
+* PowerShell Profiles
     * How you can get one
     * What I use mine for
-3. Never open ADUC again!  ADTools to the rescue!
-    * How many active user objects
-    * How many domain admins
-        * admincount=1 caveats
-    * compare some user to group memberships
-    * stale passwords for ADObjects -> https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/
-4. Tickle Outlook .net to send mail
-    * Incident Response, use case, code, and demo
-5. Show the Power of the Shell  <--time permitting
+        * Looky at mine
+* Never open ADUC again!
+    * How many active users
+    * How many passwords never set on enabled users
+    * How many people in a group
+        * compare some groups
+* Tickle Outlook to send mail
+    * IR example and use case
+* Show the Power of the Shell
     * add-type to add custom types  
         * dll load and call
         * You like your C# so much, run in PS!
+
+
 
 
 ## Rundown
@@ -61,42 +65,46 @@
             `$home\Documents\WindowsPowerShell\profile.ps1`  
         **Must Change Execution Policy to Work** 
     * Lets go through mine
+        * Found some issues with coloring the command line... 
+            * It has something to do with PSReadLine... See here:   
+                [1]: https://github.com/MicrosoftDocs/PowerShell-Docs/issues/2688  
+                [2]: https://github.com/lzybkr/PSReadLine/issues/818  
+                [3]: https://github.com/lzybkr/PSReadLine/issues/774  
+                [4]: https://github.com/Microsoft/console/issues/276  
+                * doing a remove module fixes my colorizations, and I still get features of this module somehow...  
+                `remove-module psreadline`  
+                * They say however, PSReadline is the new way of setting colours is better and the way forward... I guess I will conform.  
         * Set Alias's you like  
-        * color that console
-        * update paths
 
-3. PS AD Tools - **tested only on 2016 functional domain**
+
+3. PS AD Tools
     * Why use a GUI when all the power of ADUC is in PS ADTools
-        * It scales and is quicker to get results.
+        * It scales and is much quicker to get results.
     * find the functional level of the domain with one commandlet!  
         * `get-adrootDSE` or like this `(Get-ADRootDSE).domainFunctionality`
     * Who has a password to never expire in your domain?  
         * `get-aduser -Filter "PasswordNeverExpires -eq 'True'"`
-        * Or even if they do not require a [password](https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/)!
-            * `Get-ADUser -Filter 'useraccountcontrol -band 32' -properties * | ft samaccountname,enabled,lastlogindate,PasswordLastSet`
-        * or like this now: `Get-ADUser -Filter 'PasswordNotRequired -eq $True' `
-    * what about those stale passwords?  Checks if older than 180 days:
-        * `get-aduser -Filter "enabled -eq 'True'" -properties * | where {$_.passwordlastset -le (get-date).adddays(-180)}`
-    * Get the number of service accounts, if you have a naming standard that requires svc- at the first of the name
-        * `(get-aduser -filter "samaccountname -like 'svc-*'").count`
+    * Find out who are all members of Domain Admins Group
 
 4. Ticklin' the .Nets
     * Situation, had to update .msg file to send a phishing removel/malware endpoint events
         * too cumbersome and the perfect opp to flex some powershell skills
     * send-mailMessage to the rescue!
         * sadly no adoption because could not validate the email template
-        * even dumping the message to standard out didn't help
+        * even dumping the message didn't help
     * enter, tickling the Outlook API!!
-        * Pops open an outlook message with all the stuffs to modify via GUI
+        * Pops open an outlook message with all the stuffs
         * more easily adopted and accepted by others in IR
 
-5. Advanced Ops
+5. Advances Ops
     * Are you so attached to your C# you can't give it up?
     * Wanna add that DLL?  
 
 6. Questions
     * Code and references found in this repo.
     * `IEX (New-Object Net.Webclient).DownloadString(“https://raw.githubusercontent.com/lawlz/PSToThePeople/master/getStuff.txt”)`
+
+
 
 
 
@@ -112,49 +120,24 @@ Great resource on converting C/C++ types (generally the way MS shows you in thei
 
 Great profile information with additional PS Profile links at the bottom of [page](https://blogs.technet.microsoft.com/askpfeplat/2018/06/25/powershell-profiles-processing-illustrated/)  
 
-Environment Setup  
 WinRM can be difficult to setup.  Had to enable the [winrm quickconfig](https://4sysops.com/wiki/enable-powershell-remoting/)  
 This link help create the [HTTPS listener](https://www.visualstudiogeeks.com/devops/how-to-configure-winrm-for-https-manually)  
-Once you configure the cert, take note of the cert thumbprint and add to your client trust store:  
-    `$cert = gci Cert:\LocalMachine\My\$CertThumbprint`  
+Once you configure the cert, you can run the export-certificate cmdlet like so:  
+    `$cert = gci Cert:\LocalMachine\My\CertThumbprint`  
     `Export-Certificate -Cert $cert -FilePath "C:\Users\Administrator\Documents\newCert" -Type cert`  
 I then mounted the C$ share and copied down the cert that I exported above.  
-The final fix was to run PS with *elevated* creds from client [side Powershell](https://serverfault.com/questions/337905/enabling-powershell-remoting-access-is-denied/568228#568228)
-If your local computer is not part of your test domain, you need to run as a domain user, first grab those creds:  
-    `$creds = get-credential`  
-As a non-domain joined PC all I could seem to do was pssession remoting with this command: 
-    `enter-pssession $DCHostName -Authentication negotiate -Credential $creds -UseSSL`  
-I didn't want to add my machine to this domain, since it is local VM on this same machine.  
-However, in order to use tools like ServerManager.exe and others, you have to have a trust established to make it work easily...
+Finally the fix, run PS with *elevated* creds from client [side Powershell](https://serverfault.com/questions/337905/enabling-powershell-remoting-access-is-denied/568228#568228)
+I was able to enter a PS remoting session from a non-domain joined machine after following these steps.  
 
 
 BlueTeam Resources:  
 [Some common commands to know](https://github.com/sans-blue-team/blue-team-wiki/blob/gh-pages/Tools/PowerShell.md)  
 [Nice little repo of scripts.](https://github.com/WiredPulse/PowerShell)
 
-Install RSAT, now a 'Feature On Demand' but the GUI sucks and never really installs for me...
+
+Install RSAT, now a 'Feature On Demand' but the GUI sucks and never really installs..
 [I had to use DISM to do it](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism-capabilities-package-servicing-command-line-options)  
 First get the list of capabilities online.  
 `dism /online /get-capabilities`  
 Then copy the name and add it to the capabilityName param  
 `dism /add-capability /online /CapabilitYName:"Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0"`
-
-PSReadLine Funs..  
-* Found some issues with coloring the command line... <-- it is fixed in latest version!
-    * It has something to do with PSReadLine... See here:   
-        [1]: https://github.com/MicrosoftDocs/PowerShell-Docs/issues/2688  
-        [2]: https://github.com/lzybkr/PSReadLine/issues/818  
-        [3]: https://github.com/lzybkr/PSReadLine/issues/774  
-        [4]: https://github.com/Microsoft/console/issues/276  
-        [5]: https://github.com/microsoft/terminal/issues/372  
-        * doing a remove module fixes my colorizations:
-        `remove-module psreadline`  
-        * However, you do lose history and some other very important things that make PS shell so much better.  
-        * Recently they patched the beta, however it seems that psreadline is heavily embedded in powershellget.  IT seems to be caused by doing the `remove-module psreadline` and why I think it is tied to powershellget.  Here is the error message I saw:  
-            `Import-Module : Cannot bind parameter 'RequiredVersion'. Cannot convert value "2.0.0-beta4" to type "System.Version". Error: "Input string was not in a correct format."`  
-        * Its a very odd behavior but after running this command you could once again pass strings to the version params as opposed `[system.version]::new()`  
-            `Install-Module PowerShellGet –Repository PSGallery –Force`  Then restart your PS session.  
-        * Now you can run these commands to get the beta version working:  
-            `Install-Module -Name PSReadLine -AllowPrerelease`  
-            `import-module -Name psreadline -MinimumVersion 2.0.0 -Force -confirm`  
-            

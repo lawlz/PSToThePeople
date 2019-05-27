@@ -16,7 +16,7 @@
 
 
       .AUTHOR
-        Jimmy James
+        James Lawler
         DATE:11/20/2014
       
       .EXAMPLE
@@ -27,11 +27,12 @@
 
 #>
 
-#One of the first resources I used to find help on this topic
+#For this first part I am pretty much just following this page:
 #http://www.howtogeek.com/50236/customizing-your-powershell-profile/
-#### I have not had to do this on newer(1703+) Windows 10 to get profile working ######
+
 #before you profile do this:
 # Test-Path $profile
+
 #If nothing found then do this command:
 # if (test-path $profile) {
 #    New-Item -path $profile -type file –force
@@ -55,36 +56,62 @@ if ($host) {
   $size = $Shell.BufferSize
   $size.width=240
   $size.height=9999
-  # This is goofy, but check if last ran correct and then set the prompt.
-  function check-run {
-    if ($?) {
-        return $(write-host ":) " -ForegroundColor "Green" -NoNewline)
-      }
-      else {
-        return $(write-host ":( " -ForegroundColor "Red" -NoNewline)
-      }
-  }
-  # first check if in a remote pssession or not
-  if ($executionContext.host.name -eq "ServerRemoteHost") {
-    # I had to make a custom function to pass as one string to get the computer name to stay at the front of the prompt...
-    # the remote computer name went to the end of the prompt, I had to use parts of the default prompt to make this work: Get-Item Function:\prompt
-    function prompt {"PS $(check-run)$($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) ";}
-  }
-  else {
-    function prompt {"$(check-run)$(get-location)> ";}
-  }
-  # modifying the prompt function, one for admin and the other for reg user.
+  # here i attempted to modify the current shell to have some defaults that I prefer.
+  # I tried to base it off the current screen size to position to and all that.  Epic Fail...
+  # # now get the shell size
+  # $maxHeight = $shell.MaxPhysicalWindowSize.Height
+  # $maxWidth = $shell.MaxPhysicalWindowSize.Width
+  # # now get the buffer settings, we want lotso scroll
+  # $myBuffer = $shell.buffersize
+  # # now getting the active windowsize interface to modify
+  # $myWindow = $shell.Windowsize
+  # # modify stuffs
+  # $MyWindow.Height = ($MaxHeight)
+  # $MyWindow.Width = ($Maxwidth-2)
+  # $MyBuffer.Height = (9999)
+  # $MyBuffer.Width = ($Maxwidth-2)
+  # $shell.set_bufferSize($MyBuffer)
+  # $shell.set_windowSize($MyWindow)
+  #there is this weird initial positioning that keeps screwing this up. 
+  # .net option to tickle: System.Management.Automation.Host.Coordinates  -- nope...
+  # You can use the process namespace, first get current pid - Already Done!  $pid var...
+  # Determined that I don't really care.  I can hotkey to the position I want...
+
   # now check if you are admin or not, so you know not to screw around.
   #http://superuser.com/questions/237902/how-can-one-show-the-current-directory-in-powershell
   $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
   if ($isAdmin) {
+    # modifying the prompt variable, one for admin and the other for reg user.
+    function prompt {
+      # we want to see if the last result ($?) ran successfully
+      $(if ($?) {
+        write-host ":) " -ForegroundColor "Green" -NoNewline
+      }
+      else {
+        write-host ":( " -ForegroundColor "Red" -NoNewline
+      }) + $(write-host "$(get-location)" -foregroundcolor "darkred" -NoNewline) +
+      ">"
+    }
     # set admin window settings
+    # custom mods of the terminal shell:
     $shell.BackgroundColor = "Black"
     $shell.ForegroundColor = "DarkRed"
     $shell.windowtitle = "You are PowerShell'n as an Administrator!"
   }
   else {
-    # running as a regular user colors
+    # regular user prompt modify
+    function prompt {
+      # we want to see if the last result ($?) ran successfully
+      # based on that result color the face and make frown or smile.
+      $(if ($?) {
+        write-host ":) " -ForegroundColor "Green" -NoNewline
+      }
+      else {
+        write-host ":( " -ForegroundColor "Red" -NoNewline
+      }) + $(write-host "$(get-location)" -foregroundcolor "green" -NoNewline) +
+      ">"
+    }
+    # custom mods of the shell:
     $shell.BackgroundColor = "Black"
     $shell.ForegroundColor = "Green"
     $shell.windowtitle = "You are PowerShell'n as a normal user."
@@ -92,13 +119,12 @@ if ($host) {
 }
 else 
 {
-  # you should never see this...
   write-host "For some reason you don't have the $host var set."
+  $shell = $host
   if ($shell){
-    write-host "$shell is set?!, something wrong happened?"
+    write-host "Yay you got the host var, now do while?"
   }
 }
-
 #since moving around a profile, may not have all the paths there in the new env
 # we don't want to add paths for tab completion when not valid, this attempts that
 function check-path{
@@ -154,8 +180,8 @@ set-location $goToNewHome
 (get-psprovider 'FileSystem').Home = $goToNewHome
 
 
-# potentially remove, no valid use case.
-Function draw-figure
+# potentially remove, I really never use.
+Function Global:draw-figure
 {
 Write-Host -ForegroundColor green @"                                            
                                             ';'                  
