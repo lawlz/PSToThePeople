@@ -104,16 +104,19 @@
 ## References
 
 Automatic variables to call - [good ol' built-ins](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-6)  
-More information about the [powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1  )
 
-Weird command cannot be found then hit enter again and sure enough, [its there..](https://social.msdn.microsoft.com/Forums/en-US/2c40c928-ce5e-460d-a1ef-30c5ef494846/why-does-it-say-command-cannot-be-found?forum=WindowsIoT)  
-I believe the problem is, PS is searching the client machine and not the remote session.  Which is definitely the case, installed activedirectory module on local machine and it fixed that weird error.    
+More information about the [powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1  )
 
 Great resource on converting C/C++ types (generally the way MS shows you in their dev docs) to [.net types powershell can use](http://www.pinvoke.net/)  
 
 Great profile information with additional PS Profile links at the bottom of [page](https://blogs.technet.microsoft.com/askpfeplat/2018/06/25/powershell-profiles-processing-illustrated/)  
 
-Environment Setup  
+**BlueTeam Resources**  
+[Some common commands to know](https://github.com/sans-blue-team/blue-team-wiki/blob/gh-pages/Tools/PowerShell.md)  
+[Nice little repo of scripts.](https://github.com/WiredPulse/PowerShell)
+
+
+**Local AD Environment Setup**  
 WinRM can be difficult to setup.  Had to enable the [winrm quickconfig](https://4sysops.com/wiki/enable-powershell-remoting/)  
 This link help create the [HTTPS listener](https://www.visualstudiogeeks.com/devops/how-to-configure-winrm-for-https-manually)  
 Once you configure the cert, take note of the cert thumbprint and add to your client trust store:  
@@ -128,10 +131,8 @@ As a non-domain joined PC all I could seem to do was pssession remoting with thi
 I didn't want to add my machine to this domain, since it is local VM on this same machine.  
 However, in order to use tools like ServerManager.exe and others, you have to have a trust established to make it work easily...
 
-
-BlueTeam Resources:  
-[Some common commands to know](https://github.com/sans-blue-team/blue-team-wiki/blob/gh-pages/Tools/PowerShell.md)  
-[Nice little repo of scripts.](https://github.com/WiredPulse/PowerShell)
+Weird command cannot be found when in PSSession, and [its there..](https://social.msdn.microsoft.com/Forums/en-US/2c40c928-ce5e-460d-a1ef-30c5ef494846/why-does-it-say-command-cannot-be-found?forum=WindowsIoT)  
+I believe the problem is, PS is searching the client machine and not the remote session.  Which is definitely the case, installed activedirectory module on local machine and it fixed that weird error.  
 
 Install RSAT, now a 'Feature On Demand' but the GUI sucks and never really installs for me...
 [I had to use DISM to do it](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism-capabilities-package-servicing-command-line-options)  
@@ -139,6 +140,8 @@ First get the list of capabilities online.
 `dism /online /get-capabilities`  
 Then copy the name and add it to the capabilityName param  
 `dism /add-capability /online /CapabilitYName:"Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0"`
+
+
 
 PSReadLine Funs..  
 * Found some issues with coloring the command line... <-- it is fixed in latest version!
