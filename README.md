@@ -1,8 +1,15 @@
 # Overview
 
-# Working Repo for Preso: 'Powershell to the People'
+Working Repo for the Preso: 'Powershell to the People'  
 
-## Outline
+## PowerShell Lessons Learned from an InfoSec Guy
+
+### Abstract
+
+0-60 course over PowerShell and how I use it for every day tasks in InfoSec.  I plan to go over high level topics that would have helped me in the beginning and then take everyone for a ride into what this shell has to offer.
+
+
+## Presentation Outline
 
 1. Basics I wish I knew early on
     * Verb-noun wat?!  Syntax caveats and ways around
@@ -20,8 +27,8 @@
         * admincount=1 caveats
     * compare some user to group memberships
     * stale passwords or no password needed for [ADObjects](https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/)
-4. Tickle Outlook to send mail
-    * Incident Response, use case, code, and demo
+4. Automate IR
+    * Tickle outlook, use case, code, and demo
 5. Show the Power of the Shell  <--time permitting
     * add-type to add custom types  
         * dll load and call
@@ -48,6 +55,7 @@
     * get-member - exploring objects
         * I use this extensively to see what methods are available for an object
             * What is the type of the object
+            * What are the property values
     * format output options
         * the many ways, from csv, xml, windows form type, list, table, etc
             * convertto-csv, convertto-xml, out-gridview, format-list, format-table, out-host
@@ -81,7 +89,7 @@
     * Get the number of service accounts, if you have a naming standard that requires svc- at the first of the name
         * `(get-aduser -filter "samaccountname -like 'svc-*'").count`
 
-4. Ticklin' the .Nets
+4. Ticklin' the .Nets - Incident Response Use Case
     * Situation, had to manually update .msg file to send a phishing removal request
         * too cumbersome and the perfect opp to flex some powershell skills
     * send-mailMessage to the rescue!
@@ -93,7 +101,8 @@
 
 5. Advanced Ops
     * Are you so attached to your C# you can't give it up?
-    * Wanna add that DLL?  
+    * Wanna add that DLL?
+    * Run solely in memory?  
 
 6. Questions
     * Code and references found in this repo.
@@ -161,4 +170,29 @@ PSReadLine Funs..
         * Now you can run these commands to get the beta version working:  
             `Install-Module -Name PSReadLine -AllowPrerelease`  
             `import-module -Name psreadline -MinimumVersion 2.0.0 -Force -confirm`  
-            
+
+## Ignore?
+
+These last sections are mainly used as information for CFP input and can be ignored.
+
+### Overview
+
+The goal of this presentation is to be able to share knowledge about PowerShell that would be valuable, no matter what level of PowerShell foo you are at.  The ultimate hope is that everyone walks away with use cases and tools they could use today.  
+
+First I will walk through some tips, tricks and how to's, mainly things I wish I knew when I started using PowerShell.  Then I will go over some automation use cases of where you could save time using PowerShell for incident response or even just to quickly gather AD configuration data.  It is all possible in this shell.
+
+### Outline
+
+1.  get-help - we all need it..
+2.  PS has a .profile?!  And how I use it.
+3.  Never use ADUC again - Powershell AD Tools and the cool things therein
+4.  send-malwareResponse.ps1 <– IR Automation Use Case
+5.  You like your C#/C++ code that much, lets add-type   <-- Time permitting
+
+### Reference
+
+[Github repo link to follow along](https://github.com/lawlz/PSToThePeople)
+
+### Bio
+
+Passionate and paranoid information technology professional, who also loves to serve the community.  Been in IT for almost 15 years, with 10 years of it in Information Security. I have been fortunate enough to have had the opportunity to work on just about everything there is to do in InfoSec, with some deep knowledge in SIEM and reverse/forward web proxy technologies. My current focus is on infrastructure and endpoint automation mostly for hardening and resiliency purposes.
