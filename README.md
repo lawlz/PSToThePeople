@@ -187,7 +187,7 @@ First I will walk through some tips, tricks and how to's, mainly things I wish I
 2.  PS has a .profile?!  And how I use it.
 3.  Never use ADUC again - Powershell AD Tools and the cool things therein
 4.  send-malwareResponse.ps1 <– IR Automation Use Case
-5.  You like your C#/C++ code that much, lets add-type   <-- Time permitting
+5.  You like your C# code that much, lets add-type   <-- Time permitting
 
 ### Reference
 
