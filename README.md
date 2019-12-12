@@ -2,7 +2,8 @@
 
 Working Repo for the Preso: 'Powershell to the People'  
 
-## PowerShell Lessons Learned from an InfoSec Guy
+## PowerShell to the People!
+Just some PowerShell Lessons Learned from an InfoSec Guy
 
 ### Abstract
 
