@@ -90,13 +90,13 @@ Working Repo for the Preso: 'Powershell to the People'
         * `(get-aduser -filter "samaccountname -like 'svc-*'").count`
 
 4. Ticklin' the .Nets - Incident Response Use Case
-    * Situation, had to manually update .msg file to send a phishing removal request
-        * too cumbersome and the perfect opp to flex some powershell skills
-    * send-mailMessage to the rescue!
-        * sadly no adoption because could not validate the email template
-        * even dumping the message to standard out didn't help
+    * Situation, had to manually update .msg file to send a phishing/malware removal request
+        * too cumbersome and the perfect job for PowerShell
+    * send-malwareMail to the rescue!
+        * sadly no adoption because could not validate the email template before sending
+        * even dumping the message to standard out didn't help, wants GUI...
     * enter, tickling the Outlook API!!
-        * Pops open an outlook message with all the stuffs to modify via GUI
+        * Pops open an outlook message allowing to modify via GUI before sending
         * more easily adopted and accepted by others in IR
 
 5. Advanced Ops
@@ -177,7 +177,7 @@ These last sections are mainly used as information for CFP input and can be igno
 
 ### Overview
 
-The goal of this presentation is to be able to share knowledge about PowerShell that would be valuable, no matter what level of PowerShell foo you are at.  The ultimate hope is that everyone walks away with use cases and tools they could use today.  
+The goal of this presentation is to share knowledge about PowerShell that would be valuable for anyone that wants to learn more, no matter what level of PowerShell foo you are at.  The ultimate hope is that everyone walks away with use cases and tools they could use today.  
 
 First I will walk through some tips, tricks and how to's, mainly things I wish I knew when I started using PowerShell.  Then I will go over some automation use cases of where you could save time using PowerShell for incident response or even just to quickly gather AD configuration data.  It is all possible in this shell.
 
@@ -195,4 +195,6 @@ First I will walk through some tips, tricks and how to's, mainly things I wish I
 
 ### Bio
 
-Passionate and paranoid information technology professional, who also loves to serve the community.  Been in IT for almost 15 years, with 10 years of it in Information Security. I have been fortunate enough to have had the opportunity to work on just about everything there is to do in InfoSec, with some deep knowledge in SIEM and reverse/forward web proxy technologies. My current focus is on infrastructure and endpoint automation mostly for hardening and resiliency purposes.
+Passionate and paranoid information technology professional, who also loves to serve the community.  Been in IT for over 15 years, with almost 10 years of that in Information Security. I have been fortunate enough to have had the opportunity to work on just about everything there is to do in InfoSec, with some deep knowledge in SIEM and reverse/forward web proxy technologies. My current focus is on infrastructure and endpoint automation mostly for hardening and resiliency purposes.
+
+Passionate and paranoid infosec professional, who loves to serve the community.  Worked in IT Ops for over 15 years, 10 of that in InfoSec.
