@@ -1,13 +1,12 @@
 # Overview
 
-Working Repo for the Preso: 'Powershell to the People'  
+Working Repo for the Preso: 'PowerShell to the People'  
 
 ## PowerShell Lessons Learned from an InfoSec Guy
 
 ### Abstract
 
 0-60 course over PowerShell and how I use it for every day tasks in InfoSec.  I plan to go over high level topics that would have helped me in the beginning and then take everyone for a ride into what this shell has to offer.
-
 
 ## Presentation Outline
 
@@ -183,11 +182,11 @@ First I will walk through some tips, tricks and how to's, mainly things I wish I
 
 ### Outline
 
-1.  get-help - we all need it..
-2.  PS has a .profile?!  And how I use it.
-3.  Never use ADUC again - Powershell AD Tools and the cool things therein
-4.  send-malwareResponse.ps1 <– IR Automation Use Case
-5.  You like your C# code that much, lets add-type   <-- Time permitting
+1. get-help - we all need it..
+2. PS has a .profile?!  And how I use it.
+3. Never use ADUC again - Powershell AD Tools and the cool things therein
+4. send-malwareMail.ps1 <– IR Automation Use Case
+5. You like your C# code that much, lets add-type   <-- Time permitting
 
 ### Reference
 
