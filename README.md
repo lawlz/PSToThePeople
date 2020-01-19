@@ -66,9 +66,13 @@ Working Repo for the Preso: 'PowerShell to the People'
             * ISE has a path
             * PS Terminal has a path..
         * Luckily there is a common default path, for current user:
-            `$home\Documents\WindowsPowerShell\profile.ps1`  
-        **Must Change Execution Policy to Work** 
-    * Lets go through mine
+            `$home\Documents\WindowsPowerShell\profile.ps1` 
+          * New PSCore profile path:  
+            `$home\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`  
+        * Must Change Execution Policy to Work - I use RemoteSigned
+          `set-executionpolicy remotesigned` 
+          * PSCore already was set to this..  
+    * Lets go through the profile setting
         * Set Alias's you like  
         * color that console
         * update paths
@@ -82,7 +86,7 @@ Working Repo for the Preso: 'PowerShell to the People'
         * `get-aduser -Filter "PasswordNeverExpires -eq 'True'"`
         * Or even if they do not require a [password](https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/)!
             * `Get-ADUser -Filter 'useraccountcontrol -band 32' -properties * | ft samaccountname,enabled,lastlogindate,PasswordLastSet`
-            * Or like this now: `Get-ADUser -Filter 'PasswordNotRequired -eq $True' `
+            * Or like this now: `Get-ADUser -Filter 'PasswordNotRequired -eq $True'`
         * What about those stale passwords?  Checks if older than 180 days:
             * `get-aduser -Filter "enabled -eq 'True'" -properties * | where {$_.passwordlastset -le (get-date).adddays(-180)}`
     * Get the number of service accounts, if you have a naming standard that requires svc- at the first of the name
@@ -109,22 +113,25 @@ Working Repo for the Preso: 'PowerShell to the People'
 
 
 
-## References
+# Setup Notes
 
-Automatic variables to call - [good ol' built-ins](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-6)  
+## Local AD Environment Setup  
 
-More information about the [powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1  )
+~~~
+get-service winrm | start-service
+winrm help config
+winrm get winrm/config
+winrm get winrm/config/client
+winrm get winrm/config/server
+winrm set winrm/config/client @{trustedhosts="prd-dc1"}
+ping prd-dc1
+notepad C:\windows\system32\drivers\etc\hosts
+$creds = Get-Credential
+enter-pssession -ComputerName prd-dc1 -Credential $creds -Authentication negotiate -UseSSLNegotiate -Verbose -UseSSL
+winrm enumerate winrm/config/resource
+winrm enumerate winrm/config
+~~~
 
-Great resource on converting C/C++ types (generally the way MS shows you in their dev docs) to [.net types powershell can use](http://www.pinvoke.net/)  
-
-Great profile information with additional PS Profile links at the bottom of [page](https://blogs.technet.microsoft.com/askpfeplat/2018/06/25/powershell-profiles-processing-illustrated/)  
-
-**BlueTeam Resources**  
-[Some common commands to know](https://github.com/sans-blue-team/blue-team-wiki/blob/gh-pages/Tools/PowerShell.md)  
-[Nice little repo of scripts.](https://github.com/WiredPulse/PowerShell)
-
-
-**Local AD Environment Setup**  
 WinRM can be difficult to setup.  Had to enable the [winrm quickconfig](https://4sysops.com/wiki/enable-powershell-remoting/)  
 This link help create the [HTTPS listener](https://www.visualstudiogeeks.com/devops/how-to-configure-winrm-for-https-manually)  
 Once you configure the cert, take note of the cert thumbprint and add to your client trust store:  
@@ -139,48 +146,101 @@ As a non-domain joined PC all I could seem to do was pssession remoting with thi
 I didn't want to add my machine to this domain, since it is local VM on this same machine.  
 However, in order to use tools like ServerManager.exe and others, you have to have a trust established to make it work easily...
 
-Weird command cannot be found when in PSSession, and [its there..](https://social.msdn.microsoft.com/Forums/en-US/2c40c928-ce5e-460d-a1ef-30c5ef494846/why-does-it-say-command-cannot-be-found?forum=WindowsIoT)  
-I believe the problem is, PS is searching the client machine and not the remote session.  Which is definitely the case, installed activedirectory module on local machine and it fixed that weird error.  
-
+## RSAT Install Issue with 1809  
 Install RSAT, now a 'Feature On Demand' but the GUI sucks and never really installs for me...
 [I had to use DISM to do it](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism-capabilities-package-servicing-command-line-options)  
 First get the list of capabilities online.  
 `dism /online /get-capabilities`  
 Then copy the name and add it to the capabilityName param  
-`dism /add-capability /online /CapabilitYName:"Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0"`
+`dism /add-capability /online /CapabilitYName:"Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0`  
+Add some remote management tools as well, may not be needed:  
+`dism /add-capability /online /CapabilitYName:Rsat.RemoteAccess.Management.Tools~~~~0.0.1.0`
 
 
+## PowerShell Profile - Colorization Fix and More
+Due to the issues below, I moved to PSCore from PowerShell 5.1...  [More Info Here](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6) on how to install PSCore.  This is the cross platform PowerShell and everyone should look to start moving this direction.    
+* Install the MSI, I used 6.2.3, latest stable at the time.  7 is out in preview...  
+  * I didn't check the psremoting box during install.  I am thinking it may be more allowing than I like..  Not sure yet, to be continued..  
+* New profile path for PowerShell core:  
+`~\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`  
+* By default It was not there...  Run these two commands:  
+`new-item -path ~\Documents\ -name PowerShell -ItemType Directory`  
+`copy-item C:\<pathTo>\Microsoft.PowerShell_profile.ps1 -Destination ~\Documents\PowerShell`  
+* now restart the PS Session.  
+* as admin run the following.  
+The first one is to add the PSGallery, not trusted by default.  Since anyone pretty much can commit to this repo, keep untrusted and allow ad hoc.  
+`Install-Module PowerShellGet –Repository PSGallery –Force`  
+* This command will then install the latest PSReadline from the gallery.  
+`Install-Module -Name PSReadLine -AllowPrerelease -verbose -scope AllUsers -force`  
+* Validate all is installed with the latest PSReadline, mine is version "2.0.0-rc2".  
+`Get-InstalledModule psreadline | fl *`
 
-PSReadLine Funs..  
-* Found some issues with coloring the command line... <-- it is fixed in latest version!
-    * It has something to do with PSReadLine... See here:   
-        [1]: https://github.com/MicrosoftDocs/PowerShell-Docs/issues/2688  
-        [2]: https://github.com/lzybkr/PSReadLine/issues/818  
-        [3]: https://github.com/lzybkr/PSReadLine/issues/774  
-        [4]: https://github.com/Microsoft/console/issues/276  
-        [5]: https://github.com/microsoft/terminal/issues/372  
-        * doing a remove module fixes my colorizations:
-        `remove-module psreadline`  
-        * However, you do lose history and some other very important things that make PS shell so much better.  
-        * Recently they patched the beta, however it seems that psreadline is heavily embedded in powershellget.  IT seems to be caused by doing the `remove-module psreadline` and why I think it is tied to powershellget.  Here is the error message I saw:  
-            `Import-Module : Cannot bind parameter 'RequiredVersion'. Cannot convert value "2.0.0-beta4" to type "System.Version". Error: "Input string was not in a correct format."`  
-        * Its a very odd behavior but after running this command you could once again pass strings to the version params as opposed `[system.version]::new()`  
-            `Install-Module PowerShellGet –Repository PSGallery –Force`  Then restart your PS session.  
-        * Now you can run these commands to get the beta version working:  
-            `Install-Module -Name PSReadLine -AllowPrerelease`  
-            `import-module -Name psreadline -MinimumVersion 2.0.0 -Force -confirm`  
 
-## Ignore?
+**PSReadLine Profile Colorization Issues, even with new install of 1903**  
+
+Best source found on this, to me it helps explain why I am having troubles with this, plainly... https://devblogs.microsoft.com/commandline/new-experimental-console-features/   
+Other references to some newer issues submitted, mostly blaming PSReadline as the place to fix:  
+[1]: https://github.com/PowerShell/PowerShell/issues/7812    
+[2]: https://github.com/PowerShell/PowerShell/issues/7037   
+This feature may be something to look into, since I believe this is related to the 'newer' API as opposed to the old API I am using in the profile wrapping `$host.ui.rawui`.  
+Feature link to look into: https://github.com/microsoft/terminal/issues/1796   
+I don't like to download additional tools, but I keep seeing a reference to ColorTools for PS:  
+https://devblogs.microsoft.com/commandline/introducing-the-windows-console-colortool/  
+Repo:  https://github.com/microsoft/terminal/tree/master/src/tools/ColorTool  
+
+***Previous PSReadLine troubleshooting notes***  
+You only need to do the above steps mentioned in the PowerShell Profile section above.    
+* doing a remove module fixes my colorizations:
+  * `remove-module psreadline`  
+  * However, you do lose all the great things in PSReadline, like copy/paste, history, etc.  
+* They have patched this in Beta2.0.0.4 for me.  I tried the RC2 and it is giving me a weird colorization error:  
+![error](.\img\weirdUI_color.png)
+* Its a very odd behavior but after running this command you could once again pass strings to the version param as opposed to creating "system.Version" type using  `[system.version]::new()`  
+  * `Install-Module PowerShellGet –Repository PSGallery –Force`  
+  * Then restart restart your PS session.  Maybe reboot, TODO - Update me!
+It was stating that the module was not in a valid module path, which it was in two places.  
+List the contents of each currently loaded PSModulePath in $env:  
+`($env:PSModulePath).split(";") |foreach { gci -Verbose $_}`
+It also had an error that I need to run as admin, when I was indeed doing that.  Reboot definitely fixed this one...
+* Now you can run these commands to get the beta version working:  
+  * `Install-Module -Name PSReadLine -AllowPrerelease -verbose -scope AllUsers -force`  
+  Maybe delete this next one:
+  * `import-module -Name psreadline -MinimumVersion 2.0.0 -Force`  
+* References to this issue, and still fighting it in 1903:  
+    [1]: https://github.com/MicrosoftDocs/PowerShell-Docs/issues/2688  
+    [2]: https://github.com/lzybkr/PSReadLine/issues/818  
+    [3]: https://github.com/lzybkr/PSReadLine/issues/774  
+    [4]: https://github.com/Microsoft/console/issues/276  
+    [5]: https://github.com/microsoft/terminal/issues/372  
+* Another issue on the latest referencing RawUI is the old API... Need to get with the new?  
+    [6]: https://github.com/PowerShell/PSReadLine/issues/1110
+
+## References
+
+Automatic variables to call - [good ol' built-ins](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-6)  
+
+More information about the [powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1).
+
+Great resource on converting C/C++ types (generally the way MS shows you in their dev docs) to [.net types powershell can use](http://www.pinvoke.net/).  
+
+Great profile information with additional PS Profile links at the bottom of [page](https://blogs.technet.microsoft.com/askpfeplat/2018/06/25/powershell-profiles-processing-illustrated/)  
+
+### BlueTeam Resources  
+[Some common commands to know](https://github.com/sans-blue-team/blue-team-wiki/blob/gh-pages/Tools/PowerShell.md)  
+[Nice little repo of scripts.](https://github.com/WiredPulse/PowerShell)  
+
+
+# Ignore?
 
 These last sections are mainly used as information for CFP input and can be ignored.
 
-### Overview
+## Overview
 
 The goal of this presentation is to share knowledge about PowerShell that would be valuable for anyone that wants to learn more, no matter what level of PowerShell foo you are at.  The ultimate hope is that everyone walks away with use cases and tools they could use today.  
 
 First I will walk through some tips, tricks and how to's, mainly things I wish I knew when I started using PowerShell.  Then I will go over some automation use cases of where you could save time using PowerShell for incident response or even just to quickly gather AD configuration data.  It is all possible in this shell.
 
-### Outline
+## Outline
 
 1. get-help - we all need it..
 2. PS has a .profile?!  And how I use it.
@@ -188,11 +248,11 @@ First I will walk through some tips, tricks and how to's, mainly things I wish I
 4. send-malwareMail.ps1 <– IR Automation Use Case
 5. You like your C# code that much, lets add-type   <-- Time permitting
 
-### Reference
+## Reference
 
 [Github repo link to follow along](https://github.com/lawlz/PSToThePeople)
 
-### Bio
+## Bio
 
 Passionate and paranoid information technology professional, who also loves to serve the community.  Been in IT for over 15 years, with almost 10 years of that in Information Security. I have been fortunate enough to have had the opportunity to work on just about everything there is to do in InfoSec, with some deep knowledge in SIEM and reverse/forward web proxy technologies. My current focus is on infrastructure and endpoint automation mostly for hardening and resiliency purposes.
 
