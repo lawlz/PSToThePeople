@@ -2,7 +2,7 @@
 
 ## Working Repo for me Preso    
 
-Use and abuse freely and currently 'Bounded'within the Unlinense lawyer jargon [stuffs](https://github.com/lawlz/PSToThePeople/blob/master/LICENSE).  
+Use and abuse freely and currently 'Bounded' within the Unlinense lawyer jargon [stuffs](https://github.com/lawlz/PSToThePeople/blob/master/LICENSE).  
 
 Setup Information can be found
  [here](https://github.com/lawlz/PSToThePeople/blob/master/SETUP.md), if curious.  
@@ -66,9 +66,9 @@ Setup Information can be found
     * Like in Bash, but PS has it too!
         * some configuration required - depedning on how you are accessing PS
             * VSCode, ISE, PowerShell, PSCore, all have a different profile location...
-        * Luckily there is a common default path, for current user:
+        * Common default path, for current user in PowerShell:
             `$home\Documents\WindowsPowerShell\profile.ps1` 
-          * New PSCore profile path:  
+          * New PSCore profile common default path:  
             `$home\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`  
         * Must Change Execution Policy to Work - I use RemoteSigned
           `set-executionpolicy remotesigned` 
@@ -81,8 +81,11 @@ Setup Information can be found
 3. **PS AD Tools** - **tested only on 2016 functional domain**
     * Why use a GUI when all the power of ADUC is in PS ADTools
         * It scales and is quicker to get results.
+        * It takes time at first, but try and force yourself into it.
     * Find the functional level of the domain with one commandlet!  
         * `get-adrootDSE` or like this `(Get-ADRootDSE).domainFunctionality`
+    * Dump dang near all object properties of a user account in AD
+        * `get-aduser -Identity adm-jimmy -Properties *`
     * Who has a password to never expire in your domain?  
         * `get-aduser -Filter "PasswordNeverExpires -eq 'True'"`
         * Or even if they do not require a [password](https://blogs.technet.microsoft.com/russellt/2016/05/26/passwd_notreqd/)!
