@@ -194,7 +194,7 @@ You only need to do the above steps mentioned in the PowerShell Profile section 
   * `remove-module psreadline`  
   * However, you do lose all the great things in PSReadline, like copy/paste, history, etc.  
 * They have patched this in Beta2.0.0.4 for me.  I tried the RC2 and it is giving me a weird colorization error:  
-![error](.\img\weirdUI_color.png)
+![error](./img/weirdUI_color.png)
 * Its a very odd behavior but after running this command you could once again pass strings to the version param as opposed to creating "system.Version" type using  `[system.version]::new()`  
   * `Install-Module PowerShellGet –Repository PSGallery –Force`  
   * Then restart restart your PS session.  Maybe reboot, TODO - Update me!
