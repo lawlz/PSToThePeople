@@ -1,10 +1,13 @@
 # PowerShell to the People!
 
-Working Repo for my Preso called, 'PowerShell to the People'  
+## Working Repo for me Preso    
 
-## PowerShell Lessons Learned from an InfoSec Guy
+Use and abuse freely and currently 'Bounded'within the Unlinense lawyer jargon [stuffs](https://github.com/lawlz/PSToThePeople/blob/master/LICENSE).  
 
-### Abstract
+Setup Information can be found
+ [here](https://github.com/lawlz/PSToThePeople/blob/master/SETUP.md), if curious.  
+
+## Abstract
 
 0-60 course over PowerShell and how I use it for every day tasks in InfoSec.  I plan to go over high level topics that would have helped me in the beginning and then take everyone for a ride into what this shell has to offer.
 
@@ -36,7 +39,7 @@ Working Repo for my Preso called, 'PowerShell to the People'
 
 ## Rundown
 
-1. Basics
+1. **Basics**  
     * cmdlet naming convention
         * Does seem bloated at first, but can become more natural feeling  
         * verb-noun.ps1 construct
@@ -44,9 +47,9 @@ Working Repo for my Preso called, 'PowerShell to the People'
             * You don't have to conform - use case
                 * All the internal PS scripts for my internal compX usages starts like this:
                     `CompXGet-Computer.ps1`
-                * That way tab completion worked for internal commands, your IDE will get mad..
+                * That way tab completion worked for internal commands, your IDE will get mad.  Linters and their verb standards...
     * get-help - man for Windows
-        * man seems to be a built in alias now for get-help...
+        * man is the built in alias now for get-help, especially with PSCore
         * search for name of cmdlet, function, script, or workflow in the first parameter 
             * If you explicity state it, it goes to it
             * If not, it searches help topic titles
@@ -59,12 +62,10 @@ Working Repo for my Preso called, 'PowerShell to the People'
         * the many ways, from csv, xml, windows form type, list, table, etc
             * convertto-csv, convertto-xml, out-gridview, format-list, format-table, out-host
 
-2. PowerShell Profiles
+2. **PowerShell Profiles**
     * Like in Bash, but PS has it too!
         * some configuration required - depedning on how you are accessing PS
-            * VSCode has a path
-            * ISE has a path
-            * PS Terminal has a path..
+            * VSCode, ISE, PowerShell, PSCore, all have a different profile location...
         * Luckily there is a common default path, for current user:
             `$home\Documents\WindowsPowerShell\profile.ps1` 
           * New PSCore profile path:  
@@ -77,7 +78,7 @@ Working Repo for my Preso called, 'PowerShell to the People'
         * color that console
         * update paths
 
-3. PS AD Tools - **tested only on 2016 functional domain**
+3. **PS AD Tools** - **tested only on 2016 functional domain**
     * Why use a GUI when all the power of ADUC is in PS ADTools
         * It scales and is quicker to get results.
     * Find the functional level of the domain with one commandlet!  
@@ -92,7 +93,7 @@ Working Repo for my Preso called, 'PowerShell to the People'
     * Get the number of service accounts, if you have a naming standard that requires svc- at the first of the name
         * `(get-aduser -filter "samaccountname -like 'svc-*'").count`
 
-4. Ticklin' the .Nets - Incident Response Use Case
+4. **Ticklin' the .Nets - Incident Response Use Case**
     * Situation, had to manually update .msg file to send a phishing/malware removal request
         * too cumbersome and the perfect job for PowerShell
     * send-malwareMail to the rescue!
@@ -102,12 +103,12 @@ Working Repo for my Preso called, 'PowerShell to the People'
         * Pops open an outlook message allowing to modify via GUI before sending
         * more easily adopted and accepted by others in IR
 
-5. Advanced Ops
-    * Are you so attached to your C# you can't give it up?
+5. **Advanced Ops**
+    * Are you so attached to your C# or even VBScript you can't give it up?
     * Wanna add that DLL?
     * Run solely in memory?  
 
-6. Questions
+6. **Questions**
     * Code and references found in this repo.
     ~~~
     IEX (New-Object Net.Webclient).DownloadString(“https://raw.githubusercontent.com/lawlz/PSToThePeople/master/getStuff.txt”)
@@ -119,39 +120,11 @@ Automatic variables to call - [good ol' built-ins](https://docs.microsoft.com/en
 
 More information about the [powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1).
 
-Great resource on converting C/C++ types (generally the way MS shows you in their dev docs) to [.net types powershell can use](http://www.pinvoke.net/).  
+Great resource on converting C#/VB types (generally the way MS shows you in their dev docs) to [.net constructs that powershell can use](http://www.pinvoke.net/).  
 
 Great profile information with additional PS Profile links at the bottom of [page](https://blogs.technet.microsoft.com/askpfeplat/2018/06/25/powershell-profiles-processing-illustrated/)  
 
 ### BlueTeam Misc Resources  
 * A SANS maintained repo of PS commands that are good to [know](https://github.com/sans-blue-team/blue-team-wiki/blob/gh-pages/Tools/PowerShell.md)  
-* I stumbled across this repo of nice scripts.  From API to AD tickling, this has a robust set to start [playing with](https://github.com/WiredPulse/PowerShell)  
+* I stumbled across this repo of nice scripts.  From API to AD tickling, this has a robust set to start [playing with](https://github.com/WiredPulse/PowerShell)   
 
-
-# Ignore?
-
-These last sections are mainly used as information for CFP input and can be ignored.
-
-## Overview
-
-The goal of this presentation is to share knowledge about PowerShell that would be valuable for anyone that wants to learn more, no matter what level of PowerShell foo you are at.  The ultimate hope is that everyone walks away with use cases and tools they could use today.  
-
-First I will walk through some tips, tricks and how to's, mainly things I wish I knew when I started using PowerShell.  Then I will go over some automation use cases of where you could save time using PowerShell for incident response or even just to quickly gather AD configuration data.  It is all possible in this shell.
-
-## Outline
-
-1. get-help - we all need it..
-2. PS has a .profile?!  And how I use it.
-3. Never use ADUC again - Powershell AD Tools and the cool things therein
-4. send-malwareMail.ps1 <– IR Automation Use Case
-5. You like your C# code that much, lets add-type   <-- Time permitting
-
-## Reference
-
-[Github repo link to follow along](https://github.com/lawlz/PSToThePeople)
-
-## Bio
-
-Passionate and paranoid information technology professional, who also loves to serve the community.  Been in IT for over 15 years, with almost 10 years of that in Information Security. I have been fortunate enough to have had the opportunity to work on just about everything there is to do in InfoSec, with some deep knowledge in SIEM and reverse/forward web proxy technologies. My current focus is on infrastructure and endpoint automation mostly for hardening and resiliency purposes.
-
-Passionate and paranoid infosec professional, who loves to serve the community.  Worked in IT Ops for over 15 years, 10 of that in InfoSec.
