@@ -50,6 +50,9 @@ I had to use [winrm quickconfig](https://4sysops.com/wiki/enable-powershell-remo
 
 
 ## PowerShell Profile - Colorization Fix and More
+A [great write-up ](https://devblogs.microsoft.com/commandline/new-experimental-console-features/) on the history and the 'hacks' that even the MS dev team had to do to make PowerShell default terminal colors blue and white as opposed to the cmd black and white default.
+
+
 Due to the issues below, I moved to PSCore from PowerShell 5.1...  [More Info Here](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6) on how to install PSCore.  This is the cross platform PowerShell and everyone should look to start moving this direction as well.    
 * Install the MSI, I suggest to use PS Core 7+, since it is based on .net core 3.0 and said to support [90% PS modules now](https://www.petri.com/what-you-need-to-know-about-powershell-7)...
   * I didn't check the psremoting box during install.  I am thinking it may be more allowing than I like..  Not sure yet, to be continued..  
