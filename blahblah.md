@@ -22,6 +22,6 @@ First I will walk through some tips, tricks and how to's, mainly things I wish I
 
 ## Bio
 
-Passionate and paranoid information technology professional, who also loves to serve the community.  Been in IT for over 15 years, with almost 10 years of that in Information Security. I have been fortunate enough to have had the opportunity to work on just about everything there is to do in InfoSec, with some deep knowledge in SIEM and reverse/forward web proxy technologies. My current focus is on infrastructure and endpoint automation mostly for hardening and resiliency purposes.
+Passionate and paranoid information technology professional, who also loves to serve the community.  17 years experience working in IT for military, Fed/State Gov, and various commercial verticals.  12 years of that has been focused on information security and have done just about every job in infosec there is, with specialties in SEIM technologies/architecture/engineering, webs (forward/reverse proxy management to web/api attacking), and operational management. 
 
 Passionate and paranoid infosec professional, who loves to serve the community.  Worked in IT Ops for over 15 years, 10 of that in InfoSec.
