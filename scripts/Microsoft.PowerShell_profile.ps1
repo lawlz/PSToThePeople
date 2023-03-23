@@ -77,6 +77,10 @@ if ($host) {
   }
   else {
     # modifying the prompt function, one for admin and the other for reg user.
+    # TODO make this better - this is a hack right now..  See:
+    # https://github.com/lawlz/PSToThePeople/blob/master/SETUP.md#powershell-profile---colorization-fix-and-more
+    # For windows terminal, this may also fix the other:
+    # https://learn.microsoft.com/en-us/windows/terminal/customize-settings/color-schemes
     if ($isAdmin) {
       function prompt {"$(check-run)$(get-location)> ";  
       # set admin window settings
