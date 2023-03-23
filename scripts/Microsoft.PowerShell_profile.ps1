@@ -47,7 +47,12 @@ function md5sum {get-filehash -algorithm md5}
 # do a man on them and see, one shows the alias's commands help
 # the other shows nothing and expects those help attribs to be in the function.
 
+
 # change up the terminal window
+# determine if you are running as admin or not, used later, but got from here:
+#http://superuser.com/questions/237902/how-can-one-show-the-current-directory-in-powershell
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
+
 # I had some help on this one. 
 # https://gallery.technet.microsoft.com/scriptcenter/Set-the-PowerShell-Console-bd8b2ad1
 if ($host) {
@@ -71,23 +76,21 @@ if ($host) {
     function prompt {"PS $(check-run)$($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) ";}
   }
   else {
-    function prompt {"$(check-run)$(get-location)> ";}
-  }
-  # modifying the prompt function, one for admin and the other for reg user.
-  # now check if you are admin or not, so you know not to screw around.
-  #http://superuser.com/questions/237902/how-can-one-show-the-current-directory-in-powershell
-  $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
-  if ($isAdmin) {
-    # set admin window settings
-    $shell.BackgroundColor = "Black"
-    $shell.ForegroundColor = "DarkRed"
-    $shell.windowtitle = "You are PowerShell'n as an Administrator!"
-  }
-  else {
-    # running as a regular user colors
-    $shell.BackgroundColor = "Black"
-    $shell.ForegroundColor = "Green"
-    $shell.windowtitle = "You are PowerShell'n as a normal user."
+    # modifying the prompt function, one for admin and the other for reg user.
+    if ($isAdmin) {
+      function prompt {"$(check-run)$(get-location)> ";  
+      # set admin window settings
+      $shell.BackgroundColor = "Black"
+      $shell.ForegroundColor = "DarkRed"
+      $shell.windowtitle = "You are PowerShell'n as an Administrator!"
+    } }
+    else {
+      function prompt {"$(check-run)$(get-location)> ";  
+      # running as a regular user colors
+      $shell.BackgroundColor = "Black"
+      $shell.ForegroundColor = "Green"
+      $shell.windowtitle = "You are PowerShell'n as a normal user."
+    } }
   }
 }
 else 
