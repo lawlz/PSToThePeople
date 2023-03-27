@@ -123,15 +123,15 @@ $userRootDir = $env:USERPROFILE
 $paths = @()
 # this may not be the best way to add a path
 # just paste the valid path string in one of these, and it should do the rest.
-$paths += check-path "$userRootDir\Documents\repo\tools\android-tools"
+# $paths += check-path "$userRootDir\Documents\repo\tools\android-tools"
 $paths += check-path "C:\Program Files (x86)\Nmap"
 $paths += check-path "C:\Program Files\Git\bin"
-$paths += check-path "$userRootDir\Documents\repo\scripts\powershell"
-$paths += check-path "$userRootDir\Documents\repo\Tools\SysinternalsSuite"
-$paths += check-path "$userRootDir\Documents\GitHub\DidierStevensSuite"
-$paths += check-path "C:\Program Files\nodejs"
-$paths += check-path "C:\Program Files\Python37"
-$paths += check-path "$userRootDir\Documents\repo\scripts\python"
+# $paths += check-path "$userRootDir\Documents\repo\scripts\powershell"
+# $paths += check-path "$userRootDir\Documents\repo\Tools\SysinternalsSuite"
+# $paths += check-path "$userRootDir\Documents\GitHub\DidierStevensSuite"
+# $paths += check-path "C:\Program Files\nodejs"
+# $paths += check-path "C:\Program Files\Python37"
+# $paths += check-path "$userRootDir\Documents\repo\scripts\python"
 # now to create a string var to append to
 [string]$allPaths = ""
 foreach ($location in $paths) {
@@ -143,9 +143,9 @@ $env:Path = $env:Path + $allPaths
 
 #good ol' . ("dot") sourcing in powershell
 # if you have a custom functions you want to load, like internal corp functions, use this.
-if (test-path "$userRootDir\Documents\repo\scripts\powershell\functions.ps1") {
-  . $userRootDir\Documents\repo\scripts\powershell\functions.ps1
-}
+# if (test-path "$userRootDir\Documents\repo\scripts\powershell\functions.ps1") {
+#   . $userRootDir\Documents\repo\scripts\powershell\functions.ps1
+# }
 
 #variables, to make it easier to cd into or run a command from:
 # python3 $pygit\run.py
