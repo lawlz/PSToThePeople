@@ -128,8 +128,27 @@ There is a big caveat here.  Core has not ported the activedirectory module yet,
 
 5. **Advanced Ops**
     * Are you so attached to your C# or even VBScript you can't give it up?
-    * Wanna add that DLL?
-    * Run solely in memory?  
+        * Try this:  
+
+```
+$testcode = @"
+using System;
+
+namespace testfun
+{
+    public static class hello
+    {
+        public static void get()
+        {
+            Console.WriteLine("Hello World!");
+        }
+    }
+}
+"@
+```
+
+* Wanna add that DLL?
+* Run solely in memory?  
 
 6. **Questions**
 * Code and references found in this repo.
