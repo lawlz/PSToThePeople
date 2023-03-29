@@ -129,7 +129,7 @@ There is a big caveat here.  Core has not ported the activedirectory module yet,
 5. **Advanced Ops**
     * Are you so attached to your C# or even VBScript you can't give it up?
         * Try this:  
-
+### Test code
 ```
 $testcode = @"
 using System;
